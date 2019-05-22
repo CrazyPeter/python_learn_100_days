@@ -1,7 +1,7 @@
 # python_learn_100_days
 
 
-计划已经完成8/100
+计划已经完成10/100
 
 ## 学习补缺记录
 
@@ -23,7 +23,7 @@ def add(*args):
 * 字符串方法补全
 
 ```python
-#字符串的切片
+    #字符串的切片
     str2 = 'abc123456'
     # 字符串首字母大写
     str2.title()
@@ -69,9 +69,10 @@ def add(*args):
 ```
 
 * 数组的列表生成法
-```python
-import sys
 
+```python
+# _*_ coding: utf-8 _*_
+import sys
 
 def main():
     f = [x for x in range(1, 10)]
@@ -91,8 +92,6 @@ def main():
     print(f)
     for val in f:
         print(val)
-
-
 if __name__ == '__main__':
     main()
 ```
@@ -145,6 +144,7 @@ if __name__ == '__main__':
 
 * 有趣的例子，可以给老婆做练习用
 ```python
+
 # _*_ coding: utf-8 _*_
 
 import os
@@ -175,7 +175,75 @@ if __name__ == '__main__':
 * object: ['__class__', '__delattr__', '__dict__', '__doc__', '__format__', '__getattribute__', '__hash__', '__init__', '__module__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__']
 * 没有object: ['__doc__', '__module__']
 * 关于私有方法和私有属性，默认自己写一个_,很灵活
-
 ```
+
 [知识点：python的__get__、__set__、__delete__](https://www.cnblogs.com/flashBoxer/p/9771797.html)
 [知识点：彻底搞清楚Python中self的含义](https://www.cnblogs.com/jessonluo/p/4717140.html)
+
+* set和get方法
+
+```python
+class Person(object):
+
+    def __init__(self, name, age):
+        self._name = name
+        self._age = age
+
+    # 访问器 - getter方法
+    @property
+    def name(self):
+        return self._name
+
+    # 访问器 - getter方法
+    @property
+    def age(self):
+        return self._age
+
+    # 修改器 - setter方法
+    @age.setter
+    def age(self, age):
+        self._age = age
+
+    def play(self):
+        if self._age <= 16:
+            print('%s正在玩飞行棋.' % self._name)
+        else:
+            print('%s正在玩斗地主.' % self._name)
+
+
+def main():
+    person = Person('王大锤', 12)
+    person.play()
+    person.age = 22
+    person.play()
+    # person.name = '白元芳'  # AttributeError: can't set attribute
+
+
+if __name__ == '__main__':
+    main()
+```
+
+* __slots__只对当前类的对象生效，对子类并不起任何作用
+```
+__slots__的作用是：
+1.更快的属性访问速度
+2.减少内存消耗
+
+__slots__的实际使用注意：
+1.最好类本身只继承自objcet，因为涉及子类的问题会很复杂
+2.其实可以当成声明全局变量的方法，提前准备好内存
+```
+
+*  静态方法和类方法
+```python
+    #静态方法默认就是普通方法，用法和一般语言的类方法相同
+    @staticmethod
+    def is_valid(a, b, c):
+        return a + b > c and b + c > a and a + c > b
+
+    #类方法第一个参数默认是当前类的对象，有类的各种相关信息
+    @classmethod
+    def now(cls):
+        ctime = localtime(time())
+        return cls(ctime.tm_hour, ctime.tm_min, ctime.tm_sec)
+```
