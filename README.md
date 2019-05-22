@@ -33,6 +33,11 @@ def add(*args):
     print(str2[2::2])  # c246 [start,end,step]
     # 获得字符串修剪左右两侧空格的拷贝
     print(str3.strip())
+
+    #高级写法：这是一个字符串，不仅适用于print函数里面
+    '%02d:%02d:%02d' % \
+               (self._hour, self._minute, self._second)
+
 ```
 
 * 数组方法补全
@@ -158,3 +163,19 @@ def main():
 if __name__ == '__main__':
     main()
 ```
+
+* 类知识补全
+```
+* 初始化方法是默认的__init__，实例销毁的方法__del__,自我描述方法__str__
+* self在实例里面是要手动填入到方法里面的
+* 类的__dict__:类的静态函数、类函数、普通函数、全局变量以及一些内置的属性都是放在类__dict__里的。父类和子类的__dict__各自为战，如同其他语言设计。
+* 对象的__dict__:存储了一些self.xxx的一些东西。父类子类共用一套属性，如同其他语言设计。
+* 基础类型如集合，数组，int没有__dict__，如其他高级语言相同的设计方法
+* class必须有父类，否则没有默认方法，如果没有就继承于objcet，同OC的写法，这点ES6协议更舒服些。
+* object: ['__class__', '__delattr__', '__dict__', '__doc__', '__format__', '__getattribute__', '__hash__', '__init__', '__module__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__']
+* 没有object: ['__doc__', '__module__']
+* 关于私有方法和私有属性，默认自己写一个_,很灵活
+
+```
+[知识点：python的__get__、__set__、__delete__](https://www.cnblogs.com/flashBoxer/p/9771797.html)
+[知识点：彻底搞清楚Python中self的含义](https://www.cnblogs.com/jessonluo/p/4717140.html)
