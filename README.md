@@ -247,3 +247,102 @@ __slots__的实际使用注意：
         ctime = localtime(time())
         return cls(ctime.tm_hour, ctime.tm_min, ctime.tm_sec)
 ```
+
+* 文件读取模式一图流
+![文件操作模式](https://github.com/CrazyPeter/Python-100-Days/raw/master/Day01-15/Day11/res/file-open-mode.png)
+
+* 打开文件
+```python
+
+#甚至是调用了sys模块的exit函数退出Python环境，finally块都会被执行，exit函数实质上会引发SystemExit异常
+
+def main():
+    f = None
+    try:
+        f = open('致橡树.txt', 'r', encoding='utf-8')
+        print(f.read())
+    except FileNotFoundError:
+        print('无法打开指定的文件!')
+    except LookupError:
+        print('指定了未知的编码!')
+    except UnicodeDecodeError:
+        print('读取文件时解码错误!')
+    finally:
+        if f:
+            f.close()
+
+
+if __name__ == '__main__':
+    main()
+```
+
+或者这种方法
+
+```python
+import time
+
+def main():
+    # 一次性读取整个文件内容
+    with open('致橡树.txt', 'r', encoding='utf-8') as f:
+        print(f.read())
+
+    # 通过for-in循环逐行读取：for循环的使用
+    with open('致橡树.txt', mode='r') as f:
+        for line in f:
+            print(line, end='')
+            time.sleep(0.5)
+    print()
+
+    # 读取文件按行读取到列表中：返回数组
+    with open('致橡树.txt') as f:
+        lines = f.readlines()
+    print(lines)
+    
+
+if __name__ == '__main__':
+    main()
+```
+* with语句的作用是这样的
+```
+原理方法见：
+https://www.cnblogs.com/Xjng/p/3927794.html
+
+作用：
+在开发的过程中，会有很多对象在使用之后，是需要执行一条或多条语句来进行关闭，释放等操作的，例如上面说的的文件，还有数据库连接，锁的获取等，这些收尾的操作会让代码显得累赘，也会造成由于程序异常跳出后，没有执行到这些收尾操作，而导致一些系统的异常，还有就是很多程序员会忘记写上这些操作-_-!-_-!，为了避免这些错误的产生，with语句就被生产出来了。with语句的作用就是让程序员不用写这些收尾的代码，并且即使程序异常也会执行到这些代码（finally的作用）
+```
+
+* 关于json的处理方式
+
+```python
+import json
+
+json模块主要有四个比较重要的函数，分别是：
+
+dump - 将Python对象按照JSON格式序列化到文件中
+dumps - 将Python对象处理成JSON格式的字符串
+load - 将文件中的JSON数据反序列化成对象
+loads - 将字符串的内容反序列化成Python对象
+
+def main():
+    mydict = {
+        'name': '骆昊',
+        'age': 38,
+        'qq': 957658,
+        'friends': ['王大锤', '白元芳'],
+        'cars': [
+            {'brand': 'BYD', 'max_speed': 180},
+            {'brand': 'Audi', 'max_speed': 280},
+            {'brand': 'Benz', 'max_speed': 320}
+        ]
+    }
+    try:
+        with open('data.json', 'w', encoding='utf-8') as fs:
+            json.dump(mydict, fs)
+    except IOError as e:
+        print(e)
+    print('保存数据完成!')
+
+
+if __name__ == '__main__':
+    main()
+```
